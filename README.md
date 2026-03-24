@@ -1,124 +1,99 @@
 # AI Agent Playground
 
-This repository is designed to serve as a playground for experimenting with AI agents, particularly those using the Hugging Face models and the MCP framework. It includes various scripts for interacting with AI models, testing functionalities, and generating useful outputs such as automated README files.
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Components](#components)
-- [Getting Started](#getting-started)
-- [Running the Code](#running-the-code)
-- [Contributing](#contributing)
+This repository contains various scripts for experimenting with AI agents, particularly those using the MCP (Multi-Component Protocol) and OpenAI's language models. Below is an overview of the project, instructions on how to run the code, and explanations of the main components.
 
 ## Overview
 
-The `ai-agent-playground` is a collection of Python scripts that demonstrate how to interact with AI models through different APIs. The primary focus is on using the Hugging Face models and the MCP (Multi-Component Protocol) framework to build and test AI agents.
+The project includes several Python scripts that demonstrate different functionalities:
 
-## Components
+- **mcp_test.py**: A test script for the MCP server. It defines several tools such as `search_files`, `list_files`, `read_file`, `create_file`, and `write_file`.
+- **react_test.py**: A script that uses OpenAI's language model to interact with the filesystem and execute commands. It includes functions for reading files, running commands, and writing files.
+- **secret_logic_xyz.py**: A simple script that performs division and handles division by zero errors.
+- **test.py**: A script that runs the `mcp_test.py` script and captures its output.
+- **write_readme.py**: A script that generates a README file for the project by reading all code files and summarizing their contents.
+- **write_readme_mcp.py**: A script that uses the MCP protocol to generate a README file for the project.
 
-### `mcp_test.py`
+## Instructions
 
-This script sets up a FastMCP server that provides a tool for searching files in the current directory and its subdirectories based on a keyword. The server can be started by running the script directly.
+### Prerequisites
 
-### `react_test.py`
+Before running the scripts, ensure you have the following installed:
 
-This script demonstrates how to use the Hugging Face API to interact with a language model. It includes functions for reading files, running commands, and writing files. The script also contains a function to run an agent that reads a file, finds bugs, and fixes them.
+- Python 3.9 or higher
+- Required libraries (install using `pip`):
+  ```sh
+  pip install openai
+  pip install mcp
+  pip install dotenv
+  ```
 
-### `secret_logic_xyz.py`
+### Running the Scripts
 
-A simple utility script that defines a function to perform division, handling division by zero errors.
-
-### `write_readme.py`
-
-This script automates the creation of a README file for the project. It lists all code files, reads their contents, and generates a detailed README file.
-
-## Getting Started
-
-To get started with this project, follow these steps:
-
-1. **Clone the Repository:**
-   ```sh
-   git clone https://github.com/yourusername/ai-agent-playground.git
-   cd ai-agent-playground
-   ```
-
-2. **Set Up the Environment:**
-   - Create a virtual environment:
-     ```sh
-     python -m venv .venv
-     ```
-   - Activate the virtual environment:
-     - On Windows:
-       ```sh
-       .\.venv\Scripts\activate
-       ```
-     - On macOS/Linux:
-       ```sh
-       source .venv/bin/activate
-       ```
-   - Install the required dependencies:
-     ```sh
-     pip install -r requirements.txt
-     ```
-
-3. **Configure Environment Variables:**
+1. **Set up environment variables**:
    - Create a `.env` file in the root directory and add your Hugging Face API token:
-     ```ini
+     ```
      HF_TOKEN=your_hugging_face_api_token
      ```
 
-## Running the Code
+2. **Run the MCP server**:
+   - Run the `mcp_test.py` script to start the MCP server:
+     ```sh
+     python mcp_test.py
+     ```
 
-### Running the MCP Server
+3. **Run the agent scripts**:
+   - Run the `react_test.py` script to interact with the filesystem and execute commands:
+     ```sh
+     python react_test.py
+     ```
+   - Run the `write_readme.py` script to generate a README file:
+     ```sh
+     python write_readme.py
+     ```
+   - Run the `write_readme_mcp.py` script to generate a README file using the MCP protocol:
+     ```sh
+     python write_readme_mcp.py
+     ```
 
-To start the MCP server, run the following command:
+## Main Components
 
-```sh
-python mcp_test.py
-```
+### mcp_test.py
 
-### Running the React Test Script
+This script sets up an MCP server and defines several tools for interacting with the filesystem. The tools include:
 
-To run the script that interacts with the Hugging Face API, use the following command:
+- `search_files`: Searches for files containing a specific keyword.
+- `list_files`: Lists all code files in the current directory and subdirectories.
+- `read_file`: Reads the content of a file.
+- `create_file`: Creates a new file with specified content.
+- `write_file`: Writes content to an existing file.
 
-```sh
-python react_test.py
-```
+### react_test.py
 
-### Running the Write README Script
+This script uses OpenAI's language model to interact with the filesystem and execute commands. It includes functions for:
 
-To generate a README file automatically, run the following command:
+- Reading files.
+- Running shell commands.
+- Writing content to files.
 
-```sh
-python write_readme.py
-```
+### secret_logic_xyz.py
+
+A simple script that performs division and handles division by zero errors.
+
+### test.py
+
+This script runs the `mcp_test.py` script and captures its output, which can be useful for testing and debugging.
+
+### write_readme.py
+
+This script generates a README file for the project by reading all code files and summarizing their contents.
+
+### write_readme_mcp.py
+
+This script uses the MCP protocol to generate a README file for the project.
 
 ## Contributing
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
-
-1. **Fork the Repository:**
-   ```sh
-   git fork https://github.com/yourusername/ai-agent-playground.git
-   ```
-
-2. **Create a Branch:**
-   ```sh
-   git checkout -b feature/your-feature
-   ```
-
-3. **Commit Your Changes:**
-   ```sh
-   git commit -m "Add your feature"
-   ```
-
-4. **Push to Your Fork:**
-   ```sh
-   git push origin feature/your-feature
-   ```
-
-5. **Submit a Pull Request:**
-   - Go to the original repository and click on "New Pull Request."
+Contributions are welcome! If you have any suggestions or improvements, please feel free to open an issue or submit a pull request.
 
 ## License
 
