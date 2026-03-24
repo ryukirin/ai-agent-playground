@@ -1,0 +1,338 @@
+﻿{
+    "repository":  "ryukirin/ai-agent-playground",
+    "created":  [
+                    {
+                        "task_id":  "T001",
+                        "title":  "[001-multi-agent-specflow] T001 Create the base project directories",
+                        "number":  2,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/2"
+                    },
+                    {
+                        "task_id":  "T002",
+                        "title":  "[001-multi-agent-specflow] T002 Initialize the Python backend package and dependency manifest",
+                        "number":  3,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/3"
+                    },
+                    {
+                        "task_id":  "T003",
+                        "title":  "[001-multi-agent-specflow] T003 Initialize the frontend workspace and build tooling",
+                        "number":  4,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/4"
+                    },
+                    {
+                        "task_id":  "T004",
+                        "title":  "[001-multi-agent-specflow] T004 Configure backend/frontend linting, formatting, and test settings",
+                        "number":  5,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/5"
+                    },
+                    {
+                        "task_id":  "T005",
+                        "title":  "[001-multi-agent-specflow] T005 Add environment and model configuration examples",
+                        "number":  6,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/6"
+                    },
+                    {
+                        "task_id":  "T006",
+                        "title":  "[001-multi-agent-specflow] T006 Create local artifact output and backup directory guidance",
+                        "number":  7,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/7"
+                    },
+                    {
+                        "task_id":  "T007",
+                        "title":  "[001-multi-agent-specflow] T007 Implement the initial MySQL schema and migration for workflow core entities",
+                        "number":  8,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/8"
+                    },
+                    {
+                        "task_id":  "T008",
+                        "title":  "[001-multi-agent-specflow] T008 Create workflow and command ORM models",
+                        "number":  9,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/9"
+                    },
+                    {
+                        "task_id":  "T009",
+                        "title":  "[001-multi-agent-specflow] T009 Create artifact, artifact-version, and review ORM models",
+                        "number":  10,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/10"
+                    },
+                    {
+                        "task_id":  "T010",
+                        "title":  "[001-multi-agent-specflow] T010 Define shared API and handoff schemas",
+                        "number":  11,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/11"
+                    },
+                    {
+                        "task_id":  "T011",
+                        "title":  "[001-multi-agent-specflow] T011 Implement repository classes for runs, commands, artifacts, and reviews",
+                        "number":  12,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/12"
+                    },
+                    {
+                        "task_id":  "T012",
+                        "title":  "[001-multi-agent-specflow] T012 Implement the orchestrator runtime and command prerequisite evaluator",
+                        "number":  13,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/13"
+                    },
+                    {
+                        "task_id":  "T013",
+                        "title":  "[001-multi-agent-specflow] T013 Implement the review checkpoint service with approve/revise/block outcomes",
+                        "number":  14,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/14"
+                    },
+                    {
+                        "task_id":  "T014",
+                        "title":  "[001-multi-agent-specflow] T014 Implement the base FastAPI router, dependency wiring, and error mapping",
+                        "number":  15,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/15"
+                    },
+                    {
+                        "task_id":  "T015",
+                        "title":  "[001-multi-agent-specflow] T015 Add contract tests for `GET /api/commands` and `POST /api/runs/{runId}/commands`",
+                        "number":  16,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/16"
+                    },
+                    {
+                        "task_id":  "T016",
+                        "title":  "[001-multi-agent-specflow] T016 Add integration tests for orchestrator command selection and stage dispatch",
+                        "number":  17,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/17"
+                    },
+                    {
+                        "task_id":  "T017",
+                        "title":  "[001-multi-agent-specflow] T017 Add end-to-end UI test for choosing and running the `specify` command",
+                        "number":  18,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/18"
+                    },
+                    {
+                        "task_id":  "T018",
+                        "title":  "[001-multi-agent-specflow] T018 Add integration tests for loading the latest user-edited local artifacts before the next command",
+                        "number":  19,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/19"
+                    },
+                    {
+                        "task_id":  "T019",
+                        "title":  "[001-multi-agent-specflow] T019 Implement command availability and execution endpoints",
+                        "number":  20,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/20"
+                    },
+                    {
+                        "task_id":  "T020",
+                        "title":  "[001-multi-agent-specflow] T020 Implement the orchestrator agent service for one-command-at-a-time execution",
+                        "number":  21,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/21"
+                    },
+                    {
+                        "task_id":  "T021",
+                        "title":  "[001-multi-agent-specflow] T021 Implement the specify-stage agent adapter",
+                        "number":  22,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/22"
+                    },
+                    {
+                        "task_id":  "T022",
+                        "title":  "[001-multi-agent-specflow] T022 Configure role-fit model selection and fallback loading for command agents",
+                        "number":  23,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/23"
+                    },
+                    {
+                        "task_id":  "T023",
+                        "title":  "[001-multi-agent-specflow] T023 Implement latest-local-artifact reload and source-of-truth resolution before command dispatch",
+                        "number":  24,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/24"
+                    },
+                    {
+                        "task_id":  "T024",
+                        "title":  "[001-multi-agent-specflow] T024 Implement local Markdown artifact writing and stable path generation",
+                        "number":  25,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/25"
+                    },
+                    {
+                        "task_id":  "T025",
+                        "title":  "[001-multi-agent-specflow] T025 Build the command selection page with disabled-command states",
+                        "number":  26,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/26"
+                    },
+                    {
+                        "task_id":  "T026",
+                        "title":  "[001-multi-agent-specflow] T026 Build the run creation and output summary UI flow",
+                        "number":  27,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/27"
+                    },
+                    {
+                        "task_id":  "T027",
+                        "title":  "[001-multi-agent-specflow] T027 Add contract tests for blocked command execution and rerun behavior",
+                        "number":  28,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/28"
+                    },
+                    {
+                        "task_id":  "T028",
+                        "title":  "[001-multi-agent-specflow] T028 Add integration tests for review blocking, rejection reasons, and rerun overwrite/version history",
+                        "number":  29,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/29"
+                    },
+                    {
+                        "task_id":  "T029",
+                        "title":  "[001-multi-agent-specflow] T029 Add integration tests for review-model fallback selection on implementation-heavy artifacts",
+                        "number":  30,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/30"
+                    },
+                    {
+                        "task_id":  "T030",
+                        "title":  "[001-multi-agent-specflow] T030 Add end-to-end UI test for blocked review and rerun flow",
+                        "number":  31,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/31"
+                    },
+                    {
+                        "task_id":  "T031",
+                        "title":  "[001-multi-agent-specflow] T031 Implement the review agent adapter",
+                        "number":  32,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/32"
+                    },
+                    {
+                        "task_id":  "T032",
+                        "title":  "[001-multi-agent-specflow] T032 Implement rerun orchestration and blocked-command recovery",
+                        "number":  33,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/33"
+                    },
+                    {
+                        "task_id":  "T033",
+                        "title":  "[001-multi-agent-specflow] T033 Implement artifact version persistence and backup metadata handling",
+                        "number":  34,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/34"
+                    },
+                    {
+                        "task_id":  "T034",
+                        "title":  "[001-multi-agent-specflow] T034 Configure review-agent default and code-review fallback model selection",
+                        "number":  35,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/35"
+                    },
+                    {
+                        "task_id":  "T035",
+                        "title":  "[001-multi-agent-specflow] T035 Extend command execution endpoints to expose review status and rejection reasons",
+                        "number":  36,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/36"
+                    },
+                    {
+                        "task_id":  "T036",
+                        "title":  "[001-multi-agent-specflow] T036 Build the review detail panel and rerun action UI",
+                        "number":  37,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/37"
+                    },
+                    {
+                        "task_id":  "T037",
+                        "title":  "[001-multi-agent-specflow] T037 Build artifact version history and overwrite-state display",
+                        "number":  38,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/38"
+                    },
+                    {
+                        "task_id":  "T038",
+                        "title":  "[001-multi-agent-specflow] T038 Add contract tests for workflow detail and artifact listing endpoints",
+                        "number":  39,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/39"
+                    },
+                    {
+                        "task_id":  "T039",
+                        "title":  "[001-multi-agent-specflow] T039 Add integration tests for prerequisite validation and command-history visibility",
+                        "number":  40,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/40"
+                    },
+                    {
+                        "task_id":  "T040",
+                        "title":  "[001-multi-agent-specflow] T040 Add end-to-end UI test for command timeline and dependency visibility",
+                        "number":  41,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/41"
+                    },
+                    {
+                        "task_id":  "T041",
+                        "title":  "[001-multi-agent-specflow] T041 Implement workflow detail and artifact listing endpoints",
+                        "number":  42,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/42"
+                    },
+                    {
+                        "task_id":  "T042",
+                        "title":  "[001-multi-agent-specflow] T042 Implement command history and communication-envelope query services",
+                        "number":  43,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/43"
+                    },
+                    {
+                        "task_id":  "T043",
+                        "title":  "[001-multi-agent-specflow] T043 Implement the clarify-stage agent adapter",
+                        "number":  44,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/44"
+                    },
+                    {
+                        "task_id":  "T044",
+                        "title":  "[001-multi-agent-specflow] T044 Implement the plan-stage agent adapter",
+                        "number":  45,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/45"
+                    },
+                    {
+                        "task_id":  "T045",
+                        "title":  "[001-multi-agent-specflow] T045 Implement the tasks-stage agent adapter",
+                        "number":  46,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/46"
+                    },
+                    {
+                        "task_id":  "T046",
+                        "title":  "[001-multi-agent-specflow] T046 Implement the implement-stage agent adapter",
+                        "number":  47,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/47"
+                    },
+                    {
+                        "task_id":  "T047",
+                        "title":  "[001-multi-agent-specflow] T047 Implement the analyze-stage agent adapter and execution timeline aggregation",
+                        "number":  48,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/48"
+                    },
+                    {
+                        "task_id":  "T048",
+                        "title":  "[001-multi-agent-specflow] T048 Build the workflow timeline and command history page",
+                        "number":  49,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/49"
+                    },
+                    {
+                        "task_id":  "T049",
+                        "title":  "[001-multi-agent-specflow] T049 Build the prerequisite explanation and model-assignment panels",
+                        "number":  50,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/50"
+                    },
+                    {
+                        "task_id":  "T050",
+                        "title":  "[001-multi-agent-specflow] T050 Add cross-command contract and schema validation coverage",
+                        "number":  51,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/51"
+                    },
+                    {
+                        "task_id":  "T051",
+                        "title":  "[001-multi-agent-specflow] T051 Add benchmark coverage for command-availability load, prerequisite-check latency, and command completion targets",
+                        "number":  52,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/52"
+                    },
+                    {
+                        "task_id":  "T052",
+                        "title":  "[001-multi-agent-specflow] T052 Normalize naming, simplify duplicated service paths, and align code style",
+                        "number":  53,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/53"
+                    },
+                    {
+                        "task_id":  "T053",
+                        "title":  "[001-multi-agent-specflow] T053 Tune model routing, fallback behavior, and retry handling",
+                        "number":  54,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/54"
+                    },
+                    {
+                        "task_id":  "T054",
+                        "title":  "[001-multi-agent-specflow] T054 Validate and document quickstart accuracy as documentation and operability support",
+                        "number":  55,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/55"
+                    },
+                    {
+                        "task_id":  "T055",
+                        "title":  "[001-multi-agent-specflow] T055 Validate audit logging, review visibility, and operator-facing error messages",
+                        "number":  56,
+                        "url":  "https://github.com/ryukirin/ai-agent-playground/issues/56"
+                    }
+                ],
+    "skipped":  [
+
+                ]
+}
