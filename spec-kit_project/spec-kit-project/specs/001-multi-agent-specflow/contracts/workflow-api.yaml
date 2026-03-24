@@ -1,0 +1,236 @@
+﻿openapi: 3.1.0
+info:
+  title: Spec-Kit Command Workflow API
+  version: 0.1.0
+  description: API contract for the orchestrated multi-agent, command-by-command workflow platform.
+servers:
+  - url: http://localhost:8000
+paths:
+  /api/commands:
+    get:
+      summary: List supported commands and their availability
+      operationId: listCommands
+      responses:
+        '200':
+          description: Command availability list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  commands:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CommandAvailability'
+                required: [commands]
+  /api/runs:
+    post:
+      summary: Create a workflow run
+      operationId: createWorkflowRun
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRunRequest'
+      responses:
+        '201':
+          description: Workflow run created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowRunSummary'
+  /api/runs/{runId}:
+    get:
+      summary: Get workflow run details
+      operationId: getWorkflowRun
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Workflow run details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowRunDetail'
+        '404':
+          description: Run not found
+  /api/runs/{runId}/commands:
+    post:
+      summary: Execute one explicit workflow command
+      operationId: executeCommand
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommandExecutionRequest'
+      responses:
+        '202':
+          description: Command accepted for execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandExecutionSummary'
+        '409':
+          description: Command blocked by missing prerequisites or review state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlockedCommandResponse'
+  /api/runs/{runId}/commands/{commandExecutionId}/rerun:
+    post:
+      summary: Rerun the same command after user edits
+      operationId: rerunCommand
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+        - $ref: '#/components/parameters/CommandExecutionId'
+      responses:
+        '202':
+          description: Rerun accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandExecutionSummary'
+  /api/runs/{runId}/artifacts:
+    get:
+      summary: List current artifacts for a workflow run
+      operationId: listArtifacts
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Artifact list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  artifacts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ArtifactSummary'
+                required: [artifacts]
+components:
+  parameters:
+    RunId:
+      name: runId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    CommandExecutionId:
+      name: commandExecutionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    CommandAvailability:
+      type: object
+      properties:
+        command:
+          type: string
+          enum: [specify, clarify, plan, tasks, implement, analyze]
+        enabled:
+          type: boolean
+        reason:
+          type: string
+          nullable: true
+        missingPrerequisites:
+          type: array
+          items:
+            type: string
+      required: [command, enabled, missingPrerequisites]
+    CreateRunRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        workspacePath:
+          type: string
+        featureInput:
+          type: string
+      required: [title, workspacePath, featureInput]
+    WorkflowRunSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        status:
+          type: string
+        currentCommand:
+          type: string
+          nullable: true
+      required: [id, title, status]
+    WorkflowRunDetail:
+      allOf:
+        - $ref: '#/components/schemas/WorkflowRunSummary'
+        - type: object
+          properties:
+            commands:
+              type: array
+              items:
+                $ref: '#/components/schemas/CommandExecutionSummary'
+            latestArtifacts:
+              type: array
+              items:
+                $ref: '#/components/schemas/ArtifactSummary'
+    CommandExecutionRequest:
+      type: object
+      properties:
+        command:
+          type: string
+          enum: [specify, clarify, plan, tasks, implement, analyze]
+      required: [command]
+    CommandExecutionSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        command:
+          type: string
+        status:
+          type: string
+        reviewStatus:
+          type: string
+          nullable: true
+        rejectionReason:
+          type: string
+          nullable: true
+      required: [id, command, status]
+    BlockedCommandResponse:
+      type: object
+      properties:
+        command:
+          type: string
+        status:
+          type: string
+          enum: [blocked]
+        reason:
+          type: string
+        missingPrerequisites:
+          type: array
+          items:
+            type: string
+      required: [command, status, reason, missingPrerequisites]
+    ArtifactSummary:
+      type: object
+      properties:
+        artifactType:
+          type: string
+        relativePath:
+          type: string
+        version:
+          type: integer
+        status:
+          type: string
+      required: [artifactType, relativePath, version, status]

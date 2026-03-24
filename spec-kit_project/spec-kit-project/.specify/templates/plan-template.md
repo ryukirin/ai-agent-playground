@@ -1,4 +1,4 @@
-# Implementation Plan: [FEATURE]
+﻿# Implementation Plan: [FEATURE]
 
 **Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
 **Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
@@ -14,8 +14,8 @@
 <!--
   ACTION REQUIRED: Replace the content in this section with the concrete technical
   details for the feature. This project defaults to a multi-agent web platform
-  with a Python backend, GUI/Web user entry, MySQL persistence, and public
-  Hugging Face models selected per agent role.
+  with a Python backend, GUI/Web user entry, MySQL persistence, local Markdown
+  artifact output, and public Hugging Face models selected per agent role.
 -->
 
 **Language/Version**: [e.g., Python 3.11+ backend, TypeScript 5.x frontend or NEEDS CLARIFICATION]  
@@ -25,11 +25,11 @@
 **Target Platform**: [e.g., browser-based web app, desktop GUI shell, Linux server deployment]  
 **Project Type**: [multi-agent web application or NEEDS CLARIFICATION]  
 **Performance Goals**: [domain-specific, e.g., review turnaround < 30s, artifact generation < 2 min]  
-**Constraints**: [public Hugging Face models only, trilingual docs, review-agent gates, structured inter-agent communication, simple code style, unified naming]  
+**Constraints**: [public Hugging Face models only, local Markdown artifacts, review-agent gates, structured inter-agent communication, simple code style, unified naming]  
 **Scale/Scope**: [domain-specific, e.g., number of workflow stages, concurrent sessions, monthly artifact volume]  
 **Agent Roles**: [List each stage agent, the review agent, and ownership boundaries]  
 **Model Strategy**: [Map each agent to a public Hugging Face model and explain role fit, fallback, and limitations]  
-**Documentation Languages**: [Chinese, Japanese, English]
+**Artifact Output**: [Local Markdown files written to the workspace]
 
 ## Constitution Check
 
@@ -40,7 +40,7 @@
 - [ ] Inter-agent communication uses structured payloads, versioned artifacts, and traceable handoff metadata.
 - [ ] Every agent is mapped to a publicly available Hugging Face model with role-fit justification and fallback notes.
 - [ ] The solution keeps Python as the backend default, MySQL as the persistent store, and GUI/Web as the primary user entry.
-- [ ] Trilingual documentation scope is defined for Chinese, Japanese, and English.
+- [ ] Local Markdown artifact output is defined for generated deliverables.
 - [ ] Naming conventions and simple-code rules are documented for backend, database, API, and frontend paths.
 - [ ] Any deviation from the constitution is logged in Complexity Tracking with approval rationale.
 
@@ -89,7 +89,6 @@ frontend/
 │   ├── components/
 │   ├── pages/
 │   ├── services/
-│   ├── i18n/
 │   └── routes/
 └── tests/
 
@@ -99,9 +98,7 @@ shared/
 └── types/
 
 docs/
-├── zh-CN/
-├── ja-JP/
-└── en/
+└── [project-docs]
 ```
 
 **Structure Decision**: [Document the selected structure, note any justified deviations, and reference the real directories captured above]

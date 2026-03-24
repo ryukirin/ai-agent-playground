@@ -1,4 +1,4 @@
----
+﻿---
 
 description: "Task list template for feature implementation"
 ---
@@ -8,7 +8,7 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: Tests remain spec-driven, but key workflow contract tests, inter-agent integration tests, and review-gate validations are REQUIRED for constitution-critical flows.
+**Tests**: Tests remain spec-driven, but key workflow contract tests, inter-agent integration tests, review-gate validations, and local artifact output checks are REQUIRED for constitution-critical flows.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story while preserving stage-by-stage agent ownership.
 
@@ -36,7 +36,7 @@ description: "Task list template for feature implementation"
   - Entities from data-model.md
   - Endpoints from contracts/
   - Constitution requirements for independent agents, review gates, MySQL,
-    GUI/Web delivery, public Hugging Face models, and trilingual docs
+    GUI/Web delivery, public Hugging Face models, and local Markdown artifacts
   
   Tasks MUST be organized by user story so each story can be:
   - Implemented independently
@@ -54,10 +54,10 @@ description: "Task list template for feature implementation"
 
 - [ ] T001 Create backend, frontend, shared, and docs directory structure per plan
 - [ ] T002 Initialize Python backend project and dependencies for orchestration, API, and MySQL access
-- [ ] T003 [P] Initialize GUI/Web frontend project and i18n scaffolding
+- [ ] T003 [P] Initialize GUI/Web frontend project and workflow UI scaffolding
 - [ ] T004 [P] Configure linting, formatting, and naming rules for backend, frontend, and SQL artifacts
 - [ ] T005 [P] Register initial public Hugging Face model configuration and environment wiring
-- [ ] T006 [P] Create Chinese, Japanese, and English documentation directories and templates
+- [ ] T006 [P] Create local Markdown output directories and artifact templates
 
 ---
 
@@ -74,7 +74,7 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] T009 [P] Implement orchestration runtime for stage sequencing and status tracking
 - [ ] T010 [P] Implement review-agent checkpoint framework with approve/block/edit outcomes
 - [ ] T011 [P] Implement inter-agent context store and message tracing
-- [ ] T012 [P] Setup artifact persistence, versioning, and multilingual document linkage
+- [ ] T012 [P] Setup artifact persistence, versioning, and local Markdown output handling
 - [ ] T013 Configure API routing, session management, and error handling for workflow execution
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
@@ -100,7 +100,7 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] T019 [P] [US1] Configure the assigned public Hugging Face model and fallback mapping
 - [ ] T020 [US1] Implement backend orchestration and persistence for the story flow
 - [ ] T021 [US1] Implement GUI/Web experience for story input and result display
-- [ ] T022 [US1] Add Chinese, Japanese, and English artifact rendering for the story
+- [ ] T022 [US1] Implement local Markdown artifact writing for the story
 - [ ] T023 [US1] Wire the review-agent checkpoint and remediation loop
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
@@ -126,7 +126,7 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] T029 [P] [US2] Add or adjust the public Hugging Face model configuration for this story
 - [ ] T030 [US2] Implement backend workflow and MySQL persistence updates
 - [ ] T031 [US2] Implement frontend/UI changes for this story
-- [ ] T032 [US2] Add trilingual output and validation for story-specific artifacts
+- [ ] T032 [US2] Add local artifact output and validation for story-specific artifacts
 - [ ] T033 [US2] Integrate review-agent handling and user-visible feedback
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
@@ -152,7 +152,7 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] T039 [P] [US3] Tune the assigned Hugging Face model usage, prompts, or fallbacks
 - [ ] T040 [US3] Implement backend orchestration, review, and MySQL changes
 - [ ] T041 [US3] Implement frontend/UI updates for this story
-- [ ] T042 [US3] Add or update trilingual artifact support
+- [ ] T042 [US3] Add or update local artifact support
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -166,7 +166,7 @@ Examples of foundational tasks (adjust based on your project):
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] TXXX [P] Review and align Chinese, Japanese, and English documentation in docs/
+- [ ] TXXX [P] Review and align local Markdown artifact structure in docs/ or output directories
 - [ ] TXXX Normalize naming, simplify code paths, and remove avoidable complexity
 - [ ] TXXX Tune model routing, retries, and fallback behavior across agents
 - [ ] TXXX [P] Add or extend end-to-end workflow coverage in tests/e2e/

@@ -1,10 +1,10 @@
-﻿# [PROJECT NAME] Development Guidelines
+﻿# spec-kit-project Development Guidelines
 
-Auto-generated from all feature plans. Last updated: [DATE]
+Auto-generated from all feature plans. Last updated: 2026-03-24
 
 ## Active Technologies
 
-[EXTRACTED FROM ALL PLAN.MD FILES]
+- Python 3.12 backend, TypeScript 5.x frontend + FastAPI, Pydantic v2, SQLAlchemy 2.x, Alembic, MySQL driver, React, Vite, Playwright, Hugging Face inference integration (001-multi-agent-specflow)
 
 ## Agent Roster
 
@@ -17,7 +17,9 @@ Auto-generated from all feature plans. Last updated: [DATE]
 ## Project Structure
 
 ```text
-[ACTUAL STRUCTURE FROM PLANS]
+backend/
+frontend/
+tests/
 ```
 
 ## Interfaces, Persistence, and Outputs
@@ -30,11 +32,11 @@ Auto-generated from all feature plans. Last updated: [DATE]
 
 ## Commands
 
-[ONLY COMMANDS FOR ACTIVE TECHNOLOGIES]
+cd src; pytest; ruff check .
 
 ## Recent Changes
 
-[LAST 3 FEATURES AND WHAT THEY ADDED]
+- 001-multi-agent-specflow: Added Python 3.12 backend, TypeScript 5.x frontend + FastAPI, Pydantic v2, SQLAlchemy 2.x, Alembic, MySQL driver, React, Vite, Playwright, Hugging Face inference integration
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

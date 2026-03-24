@@ -1,4 +1,4 @@
-# Feature Specification: [FEATURE NAME]
+﻿# Feature Specification: [FEATURE NAME]
 
 **Feature Branch**: `[###-feature-name]`  
 **Created**: [DATE]  
@@ -87,21 +87,21 @@
 - **Backend**: [Python service/orchestration approach]
 - **Frontend/Input**: [GUI or web entry flow]
 - **Database**: [MySQL persistence scope]
-- **Documentation Languages**: [Chinese, Japanese, English output scope]
+- **Artifact Output**: [Local Markdown output scope and location]
 - **Naming & Style**: [Simple code style and naming rules for backend, DB, API, and frontend]
 
 ### Edge Cases
 
 <!--
-  ACTION REQUIRED: Include boundary conditions for multi-agent and multilingual
-  delivery, not only business logic.
+  ACTION REQUIRED: Include boundary conditions for multi-agent delivery,
+  review flow, and artifact output, not only business logic.
 -->
 
 - What happens when one agent's output conflicts with the previous stage context?
 - How does the system recover when the review agent rejects or rewrites an artifact?
-- How are Chinese, Japanese, and English document variants kept in sync when one translation diverges?
 - What is the fallback path if a selected public Hugging Face model underperforms for its assigned role?
 - How does the system handle MySQL version conflicts or concurrent edits to the same artifact?
+- What happens when local Markdown output succeeds for some artifacts but fails for others?
 
 ## Requirements *(mandatory)*
 
@@ -119,7 +119,7 @@
 - **FR-005**: System MUST persist workflow sessions, artifacts, review records, and model assignments in MySQL.
 - **FR-006**: System MUST implement backend orchestration in Python unless an approved exception is documented.
 - **FR-007**: System MUST select agent models from publicly available Hugging Face models and record the role-fit rationale for each assignment.
-- **FR-008**: System MUST generate or maintain important project documents in Chinese, Japanese, and English.
+- **FR-008**: System MUST write important generated workflow artifacts as local Markdown files.
 - **FR-009**: System MUST enforce simple code structure and uniform naming conventions across backend, database, API, and frontend code.
 
 *Example of marking unclear requirements:*
@@ -132,10 +132,9 @@
 - **AgentProfile**: Defines an agent's role, allowed stages, selected Hugging Face model, and fallback strategy.
 - **WorkflowStage**: Represents a spec-kit stage instance with inputs, outputs, status, and owner agent.
 - **ReviewCheckpoint**: Records review-agent decisions, edits, blocking state, and rationale.
-- **ArtifactDocument**: Stores versioned files, language variants, and lineage metadata.
+- **ArtifactDocument**: Stores versioned files, output metadata, and lineage metadata.
 - **ConversationContext**: Persists shared summaries and handoff payloads between agents.
 - **ModelAssignment**: Tracks which public Hugging Face model is bound to which agent and why.
-- **TranslationBundle**: Links Chinese, Japanese, and English versions of the same logical document.
 
 ## Success Criteria *(mandatory)*
 
@@ -149,5 +148,5 @@
 - **SC-001**: Users can submit a request through the GUI/Web interface and receive a full stage-by-stage workflow result without manual file editing.
 - **SC-002**: Each enabled stage agent successfully produces its required artifact in at least [X]% of representative test runs.
 - **SC-003**: The review agent catches, blocks, or corrects materially invalid artifacts before downstream execution in at least [X]% of seeded defect scenarios.
-- **SC-004**: Chinese, Japanese, and English document variants remain structurally aligned for 100% of required user-facing artifacts.
+- **SC-004**: Users can access all required local Markdown artifacts for a completed workflow without manual recovery steps.
 - **SC-005**: Workflow state, artifacts, and review decisions are fully recoverable from MySQL for audited sessions.

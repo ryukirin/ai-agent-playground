@@ -1,4 +1,4 @@
-# [CHECKLIST TYPE] Checklist: [FEATURE NAME]
+﻿# [CHECKLIST TYPE] Checklist: [FEATURE NAME]
 
 **Purpose**: [Brief description of what this checklist covers]
 **Created**: [DATE]
@@ -16,7 +16,7 @@
   - Technical context from plan.md
   - Implementation details from tasks.md
   - Constitution rules for independent agents, review gates, public Hugging Face
-    models, Python backend, MySQL, GUI/Web input, trilingual docs, and naming
+    models, Python backend, MySQL, GUI/Web input, local Markdown output, and naming
   
   DO NOT keep these sample items in the generated checklist file.
   ============================================================================
@@ -38,7 +38,7 @@
 
 - [ ] CHK007 Every agent uses a publicly available Hugging Face model with role-fit rationale
 - [ ] CHK008 Integration, review-gate, and end-to-end validation are defined where required
-- [ ] CHK009 Important artifacts exist in Chinese, Japanese, and English where required
+- [ ] CHK009 Important artifacts are generated in the required local Markdown format
 
 ## Style Compliance
 
