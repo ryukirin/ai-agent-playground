@@ -63,13 +63,13 @@ function Get-PhaseDependencyNote {
     param([string]$Phase)
 
     switch -Regex ($Phase) {
-        '^Phase 1:' { return '无，可立即开始。' }
-        '^Phase 2:' { return '依赖 Setup 阶段完成；会阻塞所有用户故事。' }
-        '^Phase 3:' { return '依赖 Foundational 阶段完成；这是 MVP 主线。' }
-        '^Phase 4:' { return '依赖 User Story 1 完成，因为评审阻断和重跑建立在命令执行流之上。' }
-        '^Phase 5:' { return '依赖 User Story 1 和 User Story 2 完成，因为时间线和依赖可视化需要执行记录与评审状态。' }
-        '^Final Phase:' { return '依赖所有目标用户故事完成后再进入收尾与打磨。' }
-        default { return '以 tasks.md 中的顺序和说明为准。' }
+        '^Phase 1:' { return 'None. This task can start immediately.' }
+        '^Phase 2:' { return 'Depends on the Setup phase and blocks all user stories.' }
+        '^Phase 3:' { return 'Depends on the Foundational phase and forms the MVP path.' }
+        '^Phase 4:' { return 'Depends on User Story 1 because review blocking and reruns build on the command execution flow.' }
+        '^Phase 5:' { return 'Depends on User Story 1 and User Story 2 because the timeline and dependency views require execution and review history.' }
+        '^Final Phase:' { return 'Starts after all targeted user stories are complete.' }
+        default { return 'Follow the ordering and notes in tasks.md.' }
     }
 }
 
@@ -77,10 +77,10 @@ function Get-StoryGoal {
     param([string]$Story)
 
     switch ($Story) {
-        'US1' { return '让用户显式选择并只运行一个 spec-kit 命令，并收到该命令的 Markdown 输出。' }
-        'US2' { return '在每个关键步骤加入 Review Agent 审核，支持阻断、人工修正和重跑。' }
-        'US3' { return '让操作者看见命令历史、依赖状态、参与 Agent 和模型分配，安全决定下一步。' }
-        default { return '这是共享基础设施或跨故事收尾工作，服务于整个命令式工作流平台。' }
+        'US1' { return 'Let users explicitly choose and run exactly one spec-kit command and receive that command''s Markdown outputs.' }
+        'US2' { return 'Add Review Agent governance to each critical step, including blocking, manual correction, and rerun flows.' }
+        'US3' { return 'Show operators command history, dependency status, participating agents, and model assignments so they can safely choose the next step.' }
+        default { return 'This task supports shared infrastructure or cross-story polish for the overall command workflow platform.' }
     }
 }
 
@@ -147,7 +147,7 @@ if (-not $OutputPath) {
     $OutputPath = Join-Path $FeatureDir 'github-issues.json'
 }
 
-$lines = Get-Content $tasksPath
+$lines = Get-Content $tasksPath -Encoding UTF8
 $issues = New-Object System.Collections.Generic.List[object]
 $currentPhase = ''
 $currentPurpose = ''
@@ -179,40 +179,40 @@ foreach ($line in $lines) {
 
     $order += 1
     $storyLabel = if ($task.Story) { $task.Story } else { 'Shared' }
-    $parallelText = if ($task.Parallel) { '是' } else { '否' }
-    $targetPath = if ($task.TargetPath) { ('`{0}`' -f $task.TargetPath) } else { '未显式声明' }
+    $parallelText = if ($task.Parallel) { 'Yes' } else { 'No' }
+    $targetPath = if ($task.TargetPath) { ('`{0}`' -f $task.TargetPath) } else { 'Not explicitly declared' }
     $goal = Get-StoryGoal -Story $task.Story
     $dependencyNote = Get-PhaseDependencyNote -Phase $currentPhase
-    $sectionText = if ($currentSection) { $currentSection } else { '通用任务' }
-    $purposeText = if ($currentPurpose) { $currentPurpose } else { '见 tasks.md 当前阶段说明。' }
+    $sectionText = if ($currentSection) { $currentSection } else { 'General Tasks' }
+    $purposeText = if ($currentPurpose) { $currentPurpose } else { 'See the current phase notes in tasks.md.' }
     $sourcePath = 'specs/' + $featureName + '/tasks.md'
 
     $bodyLines = @(
-        '## 概要',
+        '## Summary',
         $task.Description,
         '',
-        '## 上下文',
-        ('- 功能分支: `{0}`' -f $featureName),
-        ('- 任务编号: `{0}`' -f $task.TaskId),
-        ('- 所属阶段: `{0}`' -f $currentPhase),
-        ('- 所属分组: `{0}`' -f $sectionText),
-        ('- 用户故事: `{0}`' -f $storyLabel),
-        ('- 可并行: `{0}`' -f $parallelText),
-        "- 目标路径: $targetPath",
+        '## Context',
+        ('- Feature branch: `{0}`' -f $featureName),
+        ('- Task ID: `{0}`' -f $task.TaskId),
+        ('- Phase: `{0}`' -f $currentPhase),
+        ('- Section: `{0}`' -f $sectionText),
+        ('- Story: `{0}`' -f $storyLabel),
+        ('- Parallelizable: `{0}`' -f $parallelText),
+        "- Target path: $targetPath",
         '',
-        '## 依赖说明',
-        '- 本 issue 已按 `tasks.md` 中的依赖顺序导出。',
-        "- 阶段前置: $dependencyNote",
-        "- 阶段目的: $purposeText",
-        "- 对应目标: $goal",
+        '## Dependency Notes',
+        '- This issue was exported in dependency order from `tasks.md`.',
+        "- Phase prerequisite: $dependencyNote",
+        "- Phase purpose: $purposeText",
+        "- Goal alignment: $goal",
         '',
-        '## 完成标准',
-        "- [ ] 完成 $($task.Description)",
-        '- [ ] 变更与 `spec.md`、`plan.md`、`tasks.md` 保持一致',
-        '- [ ] 必要时补齐对应测试或验证步骤',
+        '## Completion Checklist',
+        "- [ ] Complete $($task.Description)",
+        '- [ ] Keep the change aligned with `spec.md`, `plan.md`, and `tasks.md`',
+        '- [ ] Add or update tests and validation steps where needed',
         '',
-        '## 来源',
-        ('- 任务清单: `{0}`' -f $sourcePath)
+        '## Source',
+        ('- Task list: `{0}`' -f $sourcePath)
     )
 
     $issues.Add([PSCustomObject]@{
@@ -258,37 +258,64 @@ $headers = @{
     'User-Agent'           = 'spec-kit-taskstoissues'
 }
 
-$existingTitles = @{}
+$existingIssues = @{}
 $page = 1
 do {
     $existing = Invoke-RestMethod -Method Get -Uri "https://api.github.com/repos/$($repo.Owner)/$($repo.Repo)/issues?state=all&per_page=100&page=$page" -Headers $headers
     foreach ($issue in $existing) {
-        if ($issue.title) {
-            $existingTitles[$issue.title] = $issue.html_url
+        if ($issue.title -and -not $issue.pull_request) {
+            $existingIssues[$issue.title] = [PSCustomObject]@{
+                number = $issue.number
+                url    = $issue.html_url
+                body   = $issue.body
+            }
         }
     }
     $page += 1
 } while ($existing.Count -eq 100)
 
 $created = New-Object System.Collections.Generic.List[object]
+$updated = New-Object System.Collections.Generic.List[object]
 $skipped = New-Object System.Collections.Generic.List[object]
 
 foreach ($issue in $issues) {
-    if ($existingTitles.ContainsKey($issue.title)) {
-        $skipped.Add([PSCustomObject]@{
+    $payload = @{
+        title = $issue.title
+        body  = $issue.body
+    } | ConvertTo-Json -Depth 3 -Compress
+
+    if ($existingIssues.ContainsKey($issue.title)) {
+        $existingIssue = $existingIssues[$issue.title]
+        if ($existingIssue.body -eq $issue.body) {
+            $skipped.Add([PSCustomObject]@{
+                task_id = $issue.task_id
+                title   = $issue.title
+                url     = $existingIssue.url
+            })
+            continue
+        }
+
+        $updatedIssue = Invoke-RestMethod `
+            -Method Patch `
+            -Uri "https://api.github.com/repos/$($repo.Owner)/$($repo.Repo)/issues/$($existingIssue.number)" `
+            -Headers $headers `
+            -ContentType 'application/json; charset=utf-8' `
+            -Body ([System.Text.Encoding]::UTF8.GetBytes($payload))
+        $updated.Add([PSCustomObject]@{
             task_id = $issue.task_id
-            title   = $issue.title
-            url     = $existingTitles[$issue.title]
+            title   = $updatedIssue.title
+            number  = $updatedIssue.number
+            url     = $updatedIssue.html_url
         })
         continue
     }
 
-    $payload = @{
-        title = $issue.title
-        body  = $issue.body
-    } | ConvertTo-Json
-
-    $createdIssue = Invoke-RestMethod -Method Post -Uri "https://api.github.com/repos/$($repo.Owner)/$($repo.Repo)/issues" -Headers $headers -Body $payload
+    $createdIssue = Invoke-RestMethod `
+        -Method Post `
+        -Uri "https://api.github.com/repos/$($repo.Owner)/$($repo.Repo)/issues" `
+        -Headers $headers `
+        -ContentType 'application/json; charset=utf-8' `
+        -Body ([System.Text.Encoding]::UTF8.GetBytes($payload))
     $created.Add([PSCustomObject]@{
         task_id = $issue.task_id
         title   = $createdIssue.title
@@ -301,9 +328,11 @@ $resultPath = [System.IO.Path]::ChangeExtension($OutputPath, '.publish-results.j
 [PSCustomObject]@{
     repository = "$($repo.Owner)/$($repo.Repo)"
     created    = $created
+    updated    = $updated
     skipped    = $skipped
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $resultPath -Encoding UTF8
 
 Write-Output "Created issues: $($created.Count)"
+Write-Output "Updated existing issues: $($updated.Count)"
 Write-Output "Skipped existing issues: $($skipped.Count)"
 Write-Output "Publish results written to: $resultPath"

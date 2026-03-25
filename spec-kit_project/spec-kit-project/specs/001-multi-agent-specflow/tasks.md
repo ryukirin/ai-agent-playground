@@ -29,12 +29,12 @@ description: "Task list for implementing the orchestrated spec-kit command workf
 
 **Purpose**: Initialize the project structure and baseline tooling for a web-first, Python-backed, multi-agent command workflow.
 
-- [ ] T001 Create the base project directories in backend/src/.gitkeep
-- [ ] T002 Initialize the Python backend package and dependency manifest in backend/pyproject.toml
-- [ ] T003 [P] Initialize the frontend workspace and build tooling in frontend/package.json
-- [ ] T004 [P] Configure backend/frontend linting, formatting, and test settings in backend/pytest.ini
-- [ ] T005 [P] Add environment and model configuration examples in .env.example
-- [ ] T006 [P] Create local artifact output and backup directory guidance in docs/output/README.md
+- [X] T001 Create the base project directories in backend/src/.gitkeep
+- [X] T002 Initialize the Python backend package and dependency manifest in backend/pyproject.toml
+- [X] T003 [P] Initialize the frontend workspace and build tooling in frontend/package.json
+- [X] T004 [P] Configure backend/frontend linting, formatting, and test settings in backend/pytest.ini
+- [X] T005 [P] Add environment and model configuration examples in .env.example
+- [X] T006 [P] Create local artifact output and backup directory guidance in docs/output/README.md
 
 ---
 
@@ -244,3 +244,4 @@ Task: "Build the workflow timeline page in frontend/src/pages/workflow-run-detai
 - Every story preserves explicit command selection, reviewability, and local Markdown artifact behavior.
 - `T054` is a documentation and operability support task so quickstart guidance stays aligned with the implemented workflow.
 - Avoid introducing tasks that blur agent ownership, bypass prerequisite validation, or hide review-block reasons.
+

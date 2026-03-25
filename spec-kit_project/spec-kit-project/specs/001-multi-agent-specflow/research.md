@@ -2,7 +2,7 @@
 
 ## Decision 1: Use a web-first command console with optional future GUI wrapping
 - Decision: The first release will use a browser-based web interface as the primary operator console, while keeping the backend APIs reusable for a future desktop wrapper.
-- Rationale: A web-first console is the simplest way to expose the spec-kit-like command list, prerequisite states, review results, and artifact links without introducing a second delivery surface too early.
+- Rationale: A web-first console is the simplest way to expose the spec-kit-like command list, prerequisite states, review results, write-recovery states, and artifact links without introducing a second delivery surface too early.
 - Alternatives considered:
   - Native desktop GUI: rejected for v1 because it adds packaging and update complexity without changing the workflow model.
   - CLI-first interface: rejected because the constitution requires GUI/Web as the primary user entry point.
@@ -15,8 +15,8 @@
   - Flask: rejected because more manual structure would be needed for validation, async execution, and OpenAPI generation.
 
 ## Decision 3: Persist workflow state in MySQL and keep artifact files on the local filesystem
-- Decision: Store workflow runs, command executions, review decisions, communication envelopes, and artifact metadata in MySQL 8.0; store the generated Markdown artifacts in the target workspace on disk.
-- Rationale: MySQL satisfies the constitution's mandatory persistence requirement, while filesystem output preserves the spec-kit-like local document workflow users expect.
+- Decision: Store workflow runs, command executions, review decisions, communication envelopes, prerequisite evidence, source-of-truth reconciliation, and artifact metadata in MySQL 8.0; store the generated Markdown artifacts in the target workspace on disk.
+- Rationale: MySQL satisfies the constitution's mandatory persistence requirement, while filesystem output preserves the spec-kit-like local document workflow users expect. MySQL-first durability also lets the product recover from crashes that happen after review but before local file finalization.
 - Alternatives considered:
   - Store artifact bodies only in MySQL: rejected because users explicitly need local `.md` files they can edit between commands.
   - PostgreSQL: rejected because the constitution requires MySQL as the default persistent store.
@@ -29,8 +29,8 @@
   - Allow force-skipping by default: rejected because it undermines review gates and prerequisite safety.
 
 ## Decision 5: Use overwrite-on-rerun with preserved artifact version history
-- Decision: When a user reruns the same command, the platform overwrites the target Markdown file paths by default and records prior versions in an artifact history table plus a backup path reference.
-- Rationale: This keeps output locations stable for users while preserving traceability and rollback visibility.
+- Decision: When a user reruns the same command, the platform overwrites the target Markdown file paths by default and records prior versions in an artifact history table plus a backup path reference and backup-status field.
+- Rationale: This keeps output locations stable for users while preserving traceability and rollback visibility. If overwrite or backup finalization only partially succeeds, the workflow remains incomplete and recoverable instead of pretending the rerun finished cleanly.
 - Alternatives considered:
   - Always create duplicate files: rejected because it would create clutter and ambiguous downstream inputs.
   - Prompt for overwrite every time: rejected because it slows the normal rerun workflow and adds avoidable friction.
@@ -55,3 +55,17 @@
 - Alternatives considered:
   - Fully synchronous HTTP requests for all command work: rejected because longer steps would increase timeout and reliability risks.
   - External queue as a hard dependency in v1: rejected because it adds operational complexity before the core workflow is proven.
+
+## Decision 9: Use one canonical persisted history and derive audit, rollback, and UI views from it
+- Decision: Keep one canonical history made of command, stage, review, communication, artifact, and artifact-version records. Derive `OutputBundle`, timeline views, audit lookups, and rollback panels from that same history.
+- Rationale: A single persisted history avoids conflicting sources of truth and keeps auditability, rollback, and UI state aligned.
+- Alternatives considered:
+  - Separate audit tables and UI timeline tables: rejected because they would drift and complicate consistency guarantees.
+  - Persist `OutputBundle` as a separate table: rejected because it duplicates command/artifact/review state.
+
+## Decision 10: Explicitly model incomplete write-finalization and dependency outages
+- Decision: Treat post-review write failures, backup-finalization failures, Hugging Face availability failures, and MySQL outages as explicit persisted states rather than implicit generic errors.
+- Rationale: Operators need to distinguish "review blocked", "agent failed", "dependency unavailable", and "write recovery required" in both workflow history and remediation paths.
+- Alternatives considered:
+  - Collapse every abnormal path into `failed`: rejected because it hides recovery options and weakens audit clarity.
+  - Allow execution to continue when MySQL is unavailable: rejected because the system would lose its durable source of truth.

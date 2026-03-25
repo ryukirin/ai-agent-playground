@@ -1,6 +1,9 @@
 ﻿{
     "repository":  "ryukirin/ai-agent-playground",
     "created":  [
+
+                ],
+    "updated":  [
                     {
                         "task_id":  "T001",
                         "title":  "[001-multi-agent-specflow] T001 Create the base project directories",

@@ -1,7 +1,7 @@
 ﻿openapi: 3.1.0
 info:
   title: Spec-Kit Command Workflow API
-  version: 0.1.0
+  version: 0.2.0
   description: API contract for the orchestrated multi-agent, command-by-command workflow platform.
 servers:
   - url: http://localhost:8000
@@ -153,6 +153,7 @@ components:
           type: string
         workspacePath:
           type: string
+          description: Canonical absolute local path under a server-configured allowlist of workspace roots.
         featureInput:
           type: string
       required: [title, workspacePath, featureInput]
@@ -166,8 +167,13 @@ components:
           type: string
         status:
           type: string
+          enum: [draft, active, blocked, completed, abandoned]
         currentCommand:
           type: string
+          nullable: true
+        currentCommandExecutionId:
+          type: string
+          format: uuid
           nullable: true
       required: [id, title, status]
     WorkflowRunDetail:
@@ -183,6 +189,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ArtifactSummary'
+            timelineFieldSet:
+              type: array
+              items:
+                type: string
+              description: Canonical field set exposed for each command-history item in timeline and audit views.
     CommandExecutionRequest:
       type: object
       properties:
@@ -198,15 +209,49 @@ components:
           format: uuid
         command:
           type: string
+          enum: [specify, clarify, plan, tasks, implement, analyze]
         status:
           type: string
+          enum: [queued, running, review_required, blocked, incomplete, completed, failed]
+        artifactWriteStatus:
+          type: string
+          enum: [not_started, writing, succeeded, partial, failed]
+        failureCategory:
+          type: string
+          enum: [none, prerequisite_block, review_block, agent_error, write_failure, model_unavailable, database_unavailable]
+          nullable: true
         reviewStatus:
           type: string
+          enum: [not_required, pending, approved, revised, blocked]
           nullable: true
         rejectionReason:
           type: string
           nullable: true
-      required: [id, command, status]
+        rerunOfCommandExecutionId:
+          type: string
+          format: uuid
+          nullable: true
+        recoveryAction:
+          type: string
+          enum: [none, manual_edit_then_rerun, retry_write_finalization]
+          nullable: true
+        handoffStatus:
+          type: string
+          enum: [not_started, in_progress, completed, blocked, failed]
+          nullable: true
+        missingPrerequisites:
+          type: array
+          items:
+            type: string
+        prerequisiteSnapshot:
+          type: object
+          additionalProperties: true
+          nullable: true
+        participatingAgents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentParticipationSummary'
+      required: [id, command, status, artifactWriteStatus, participatingAgents]
     BlockedCommandResponse:
       type: object
       properties:
@@ -221,7 +266,10 @@ components:
           type: array
           items:
             type: string
-      required: [command, status, reason, missingPrerequisites]
+        prerequisiteSnapshot:
+          type: object
+          additionalProperties: true
+      required: [command, status, reason, missingPrerequisites, prerequisiteSnapshot]
     ArtifactSummary:
       type: object
       properties:
@@ -233,4 +281,28 @@ components:
           type: integer
         status:
           type: string
-      required: [artifactType, relativePath, version, status]
+          enum: [draft, approved, blocked, superseded, write_failed]
+        sourceOfTruth:
+          type: string
+          enum: [database, local_file]
+        lastWriteError:
+          type: string
+          nullable: true
+      required: [artifactType, relativePath, version, status, sourceOfTruth]
+    AgentParticipationSummary:
+      type: object
+      properties:
+        agentName:
+          type: string
+        roleType:
+          type: string
+          enum: [orchestrator, stage, review]
+        modelSlug:
+          type: string
+        usedFallback:
+          type: boolean
+        stageName:
+          type: string
+          nullable: true
+      required: [agentName, roleType, modelSlug, usedFallback]
+
