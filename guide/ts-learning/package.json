@@ -1,0 +1,40 @@
+{
+  "name": "ts-learning",
+  "version": "1.0.0",
+  "description": "TypeScript 学習ガイド(JS 経験者向け・章別・実行可能サンプル付き)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "tsx src/13_skill_test.ts",
+    "ch01": "tsx src/01_first_step.ts",
+    "ch02": "tsx src/02_js_refresher.ts",
+    "ch03": "tsx src/03_basic_types.ts",
+    "ch04": "tsx src/04_functions.ts",
+    "ch05": "tsx src/05_objects_interfaces.ts",
+    "ch06": "tsx src/06_arrays_tuples_enums.ts",
+    "ch07": "tsx src/07_unions_narrowing.ts",
+    "ch08": "tsx src/08_generics.ts",
+    "ch09": "tsx src/09_utility_types.ts",
+    "ch10": "tsx src/10_classes.ts",
+    "ch11": "tsx src/11_async.ts",
+    "ch12": "tsx src/12_modules_and_practice.ts",
+    "ch14": "tsx src/14_ai_agent.ts",
+    "ch15": "tsx src/15_streaming_structured.ts",
+    "ch16": "tsx src/16_react_typescript.tsx"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.81",
+    "ai": "^6.0.195",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "zod": "^4.4.3"
+  }
+}
