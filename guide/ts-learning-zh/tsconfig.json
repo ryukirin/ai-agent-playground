@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* 出力ターゲット: 最近の Node.js で動く新しめの構文を許可 */
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+
+    /* 各ファイルを独立したモジュール扱いにする(同名 const の衝突を防ぐ) */
+    "moduleDetection": "force",
+
+    /* 学習の肝: 厳格モードを最初から ON にする */
+    "strict": true,
+
+    /* import の相互運用と型チェック高速化 */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* tsx で実行するので JS は出力しない(型チェック専用に使う) */
+    "noEmit": true,
+
+    /* 第14・15章(AI SDK)と第16章(React)用。React は DOM の型を使う */
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    /* 第16章 React: JSX を react-jsx(自動ランタイム)で変換する */
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

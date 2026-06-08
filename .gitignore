@@ -137,6 +137,7 @@ celerybeat.pid
 # Environments
 .env
 .envrc
+.env.local
 .venv
 env/
 venv/
@@ -193,6 +194,34 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Node / frontend dependencies and local build artifacts
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Frontend framework caches
+.vite/
+.next/
+.nuxt/
+.svelte-kit/
+.turbo/
+
+# Local run output
+.run-logs/
+**/.run-logs/
+
+# Nested local projects managed as separate Git repositories
+spec-kit_project/spec-kit-project/
 
 # Cursor
 #  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
