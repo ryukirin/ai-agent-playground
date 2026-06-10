@@ -48,7 +48,7 @@ Anthropic 对 AI 智能体的定义如下:
 
 ## 2-2. 示例代码 ── 自己写一条 ReAct 循环(本教科书的核心)
 
-写一个只有 2 个工具(计算器·读文件)的最小智能体。**这是整个教科书学习收益最高的代码。**
+写一个只有 2 个工具(列目录·读文件)的最小智能体。**这是整个教科书学习收益最高的代码。**
 
 ```python
 import os
@@ -63,14 +63,14 @@ TOOLS = [
     {
         "type": "function",
         "function": {
-            "name": "calculator",
-            "description": "计算表达式并返回结果。例: '1+2*3'",
+            "name": "list_files",
+            "description": "返回指定目录内的文件名列表。",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "expression": {"type": "string", "description": "要计算的表达式"}
+                    "directory": {"type": "string", "description": "要列出的目录的绝对路径"}
                 },
-                "required": ["expression"],
+                "required": ["directory"],
             },
         },
     },
@@ -92,9 +92,11 @@ TOOLS = [
 
 # ── ② 工具的「实体」。由 Harness 实际执行的函数 ──
 def run_tool(name, args):
-    if name == "calculator":
-        # 注意: eval 仅用于学习。生产环境绝不可用(任意代码执行的风险)
-        return str(eval(args["expression"]))
+    if name == "list_files":
+        d = args["directory"]
+        if not os.path.isdir(d):
+            return f"错误: 找不到目录: {d}"
+        return "\n".join(os.listdir(d)) or "(空目录)"
     elif name == "read_file":
         if not os.path.exists(args["path"]):
             return f"错误: 找不到文件: {args['path']}"
@@ -139,10 +141,16 @@ def run_agent(user_message, max_iterations=10):
     print("⚠️ 已达迭代上限(防失控)")
 
 # ── 运行 ──
-run_agent("12345 加 67890,再把结果除以 2 是多少?")
+# 例: 假设 /work/ 下有 config.json,其中写着 "port": 8080。
+# (运行前先准备好该目录与文件)
+run_agent("在 /work 下找到配置文件,并告诉我端口号。")
 ```
 
-运行后,日志会显示:模型调用 `calculator` → 观察结果 → 必要时再次调用 → 最终回答。**这一往返正是 ReAct 循环。**
+运行后,日志会显示:模型先调用 `list_files("/work")` → **观察**结果、得知配置文件是 `config.json` → 这时才调用 `read_file("/work/config.json")` → 观察并找到 `"port": 8080` → 最终回答。**这一往返正是 ReAct 循环。**
+
+> 📌 **关键点(以及计算问题为何不适合 ReAct)**:本例中**第 2 步读哪个文件,要等第 1 步的观察(目录里有哪些文件)才能确定**。事先无法写死路径,所以观察 → 思考的往返(循环)成为**必然**;而且模型本来就看不到文件系统,没有工具就什么都做不了。
+>
+> 反之,像「计算 `12345 + 67890`」这样的**计算问题并不适合 ReAct**:模型自己就能算(无需工具),也不存在「观察后改变下一步」的环节(一步就结束)。**ReAct 真正发挥作用的,是「调查外部状态、并根据结果改变下一步行动」的任务**(调查·探索·分步操作)。
 
 ### 发生了什么(逐行对应)
 
@@ -157,7 +165,7 @@ run_agent("12345 加 67890,再把结果除以 2 是多少?")
 ## 2-3. 练习
 
 1. **【必做·基础】** 实际运行上面的代码,在日志中观察工具被调用的过程。把 `max_iterations` 设为 1,试试会发生什么。
-2. **【必做·实现】** 增加第 3 个工具 `write_file(path, content)`,让它「把计算结果写入文件」并运行。需要同时修改 `TOOLS` 定义和 `run_tool`。
+2. **【必做·实现】** 增加第 3 个工具 `write_file(path, content)`,让它「把读取到的配置内容写入另一个文件」并运行。需要同时修改 `TOOLS` 定义和 `run_tool`。
 3. **【理解】** 每轮 `print` 出 `messages` 数组,观察对话历史如何增长。确认 assistant 的 `tool_calls` 与对应的 `tool` 角色消息(以 `tool_call_id` 关联)成对出现。
 4. **【进阶】** 让模型故意去读一个不存在的文件,此时 `run_tool` 返回错误字符串。观察模型如何根据这个错误调整行为(=错误也作为 Observation 成为学习材料)。
 5. **【进阶】** 复现「doom loop(反复同一失败的死循环)」。例如让 `read_file` 总是返回同一错误,观察模型反复调用同一工具的样子,亲身体会为何 iteration cap 是必备的安全装置。

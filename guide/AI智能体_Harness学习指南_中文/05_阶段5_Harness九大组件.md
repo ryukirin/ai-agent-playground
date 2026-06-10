@@ -61,7 +61,7 @@ class AgentHarness:
         self.model = "Qwen/Qwen2.5-72B-Instruct"  # ① Model Interface
         self.tools = TOOLS                     # ② Tool Registry(定义)
         self.tool_impls = {                    # ② + ⑤ Execution Engine
-            "calculator": run_calculator,
+            "list_files": run_list_files,
             "read_file": run_read_file,
         }
         self.messages = []                     # ③ Context Manager / ⑥ in-context memory
@@ -106,7 +106,7 @@ class AgentHarness:
         return "⚠️ 迭代上限"
 ```
 
-> 开头需要 `import os, json` 与 `from huggingface_hub import InferenceClient`(`TOOLS` / `run_calculator` / `run_read_file` / `compact_history` 沿用阶段 2~4)。
+> 开头需要 `import os, json` 与 `from huggingface_hub import InferenceClient`(`TOOLS` / `run_list_files` / `run_read_file` / `compact_history` 沿用阶段 2~4)。
 
 ## 5-3. 练习
 
