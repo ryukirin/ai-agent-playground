@@ -6,18 +6,20 @@
 
 ## Supervisor/Worker パターン
 
-```
-     ┌──────────────┐
-     │  Supervisor   │ ← 全体管理・次のエージェント決定
-     └──────┬───────┘
-            │
-   ┌────────┼────────┐
-   ↓        ↓        ↓
-Researcher  Writer   Critic
-   │        │        │
-   └────────┼────────┘
-            ↓
-        Supervisor（に戻る）
+```mermaid
+flowchart TB
+    Supervisor["Supervisor<br/>（全体管理・次のエージェント決定）"]
+    Researcher["Researcher"]
+    Writer["Writer"]
+    Critic["Critic"]
+    Back["Supervisor（に戻る）"]
+
+    Supervisor --> Researcher
+    Supervisor --> Writer
+    Supervisor --> Critic
+    Researcher --> Back
+    Writer --> Back
+    Critic --> Back
 ```
 
 ### 各エージェントの役割

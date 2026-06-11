@@ -4,12 +4,11 @@
 
 ツール実行が失敗した時、エラーメッセージをLLMに渡して修正策を生成し、再実行する。
 
-```
-execute ─── success ──→ END
-    │
-   error
-    │
-    └──→ analyze（LLMがエラーを分析・修正）──→ execute（再実行）
+```mermaid
+flowchart LR
+    execute["execute"] -->|success| done["END"]
+    execute -->|error| analyze["analyze<br/>（LLMがエラーを分析・修正）"]
+    analyze -->|再実行| execute
 ```
 
 ## 3種類のエラーパターンと対処
