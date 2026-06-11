@@ -29,7 +29,7 @@
 有流式：「TypeScript」「的」「异步是…」 ← 像打字一样逐字流出
 ```
 
-在 ChatGPT 和 Claude.ai 中感受到的「文字流淌感」正是如此。
+在 ChatGPT 等聊天 AI 中感受到的「文字流淌感」正是如此。
 
 ---
 
@@ -39,11 +39,17 @@ Vercel AI SDK 的 `streamText` 最大的特点是**不需要 `await`**。
 
 ```ts
 import { streamText } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+
+const hf = createOpenAICompatible({
+  name: "huggingface",
+  baseURL: "https://router.huggingface.co/v1",
+  apiKey: process.env.HF_TOKEN,
+});
 
 // 不 await——调用的瞬间就返回结果对象
 const result = streamText({
-  model: anthropic("claude-sonnet-4-5"), // 请替换为最新的模型 ID
+  model: hf("Qwen/Qwen2.5-72B-Instruct"), // Hugging Face 的开源模型
   prompt: "请用两句话解释 TypeScript 的 async/await。",
 });
 
@@ -93,13 +99,25 @@ for await (const chunk of mockStream("你好 TypeScript 的世界")) {
 
 `AsyncGenerator<string>` 是「异步地逐个输出 string 的序列」。`for await...of` 是**按顺序**取出它们的循环。
 
-```
-AsyncGenerator<string>     for await...of
-┌──────────────────┐        ┌─────────────────────────┐
-│  yield "你好"    │──→│ chunk = "你好 "         │
-│  yield "TypeScript"│──→│ chunk = "TypeScript "   │
-│  yield "的世界"  │──→│ chunk = "的世界 "       │
-└──────────────────┘        └─────────────────────────┘
+```mermaid
+flowchart LR
+  subgraph GEN["AsyncGenerator&lt;string&gt;"]
+    direction TB
+    g1["yield 你好"]
+    g2["yield TypeScript"]
+    g3["yield 的世界"]
+    g1 ~~~ g2 ~~~ g3
+  end
+  subgraph LOOP["for await...of"]
+    direction TB
+    c1["chunk = 你好 "]
+    c2["chunk = TypeScript "]
+    c3["chunk = 的世界 "]
+    c1 ~~~ c2 ~~~ c3
+  end
+  g1 --> c1
+  g2 --> c2
+  g3 --> c3
 ```
 
 > **streamText 的 `textStream` 也是相同的类型**（`AsyncIterable<string>`）。通过 mock 理解其运作方式后，迁移到真实 API 时不会感到困惑。
@@ -133,11 +151,11 @@ type ArticleMeta = z.infer<typeof articleMetaSchema>;
 
 ```ts
 import { generateObject } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+// hf 为前述 createOpenAICompatible(...) 创建好的实例
 
 // generateObject 需要 await
 const { object } = await generateObject({
-  model: anthropic("claude-sonnet-4-5"),
+  model: hf("Qwen/Qwen2.5-72B-Instruct"),
   schema: articleMetaSchema,      // 只需传入 Zod schema
   prompt: "请生成一篇关于 TypeScript 异步处理的技术文章的元数据。",
 });
@@ -182,7 +200,7 @@ console.log(result.success); // false → "urgent" 不在 enum 中
 import { streamObject } from "ai";
 
 const { partialObjectStream } = streamObject({
-  model: anthropic("claude-sonnet-4-5"),
+  model: hf("Qwen/Qwen2.5-72B-Instruct"),
   schema: articleMetaSchema,
   prompt: "...",
 });
@@ -199,12 +217,12 @@ for await (const partial of partialObjectStream) {
 
 ## 离线与真实 API 的切换
 
-`src/15_streaming_structured.ts` 与第14章相同，采用「根据 Key 是否存在自动切换」的模式。
+`src/15_streaming_structured.ts` 与第14章相同，采用「根据令牌是否存在自动切换」的模式。
 
 ```ts
 async function main(): Promise<void> {
-  if (process.env.ANTHROPIC_API_KEY) {
-    // 使用 streamText / generateObject 调用真实 Claude
+  if (process.env.HF_TOKEN) {
+    // 使用 streamText / generateObject 调用真实 Hugging Face 模型
     await demoRealStreaming();
     await demoRealStructured();
   } else {
@@ -386,6 +404,6 @@ if (!ng.success) console.log(ng.error.issues[0]?.message);
 
 ```bash
 npm run ch15
-# 使用真实 Claude（PowerShell）：
-#   $env:ANTHROPIC_API_KEY = "sk-ant-..."; npm run ch15
+# 使用真实 Hugging Face 模型（PowerShell）：
+#   $env:HF_TOKEN = "hf_..."; npm run ch15
 ```

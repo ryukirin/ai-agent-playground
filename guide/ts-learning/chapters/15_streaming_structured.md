@@ -29,7 +29,7 @@
 ストリームあり: 「TypeScript」「の」「非同期は…」 ← 打鍵されるように流れてくる
 ```
 
-ChatGPT や Claude.ai で感じる「文字が流れてくる感じ」はこれです。
+ChatGPT などのチャット AI で感じる「文字が流れてくる感じ」はこれです。
 
 ---
 
@@ -39,11 +39,17 @@ Vercel AI SDK の `streamText` は `await` **しない**のが最大のポイン
 
 ```ts
 import { streamText } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+
+const hf = createOpenAICompatible({
+  name: "huggingface",
+  baseURL: "https://router.huggingface.co/v1",
+  apiKey: process.env.HF_TOKEN,
+});
 
 // await しない — 呼んだ瞬間に結果オブジェクトが返る
 const result = streamText({
-  model: anthropic("claude-sonnet-4-5"), // モデル ID は最新版に置き換えてください
+  model: hf("Qwen/Qwen2.5-72B-Instruct"), // Hugging Face のオープンモデル
   prompt: "TypeScript の async/await を 2 文で説明してください。",
 });
 
@@ -93,13 +99,23 @@ for await (const chunk of mockStream("こんにちは TypeScript の世界へ"))
 
 `AsyncGenerator<string>` は「非同期に string を 1 個ずつ出してくるシーケンス」です。`for await...of` はそれを**順番に**取り出すループです。
 
-```
-AsyncGenerator<string>     for await...of
-┌──────────────────┐        ┌─────────────────────────┐
-│  yield "こんにちは" │──→│ chunk = "こんにちは "  │
-│  yield "TypeScript"│──→│ chunk = "TypeScript "   │
-│  yield "の世界へ"  │──→│ chunk = "の世界へ "     │
-└──────────────────┘        └─────────────────────────┘
+```mermaid
+flowchart LR
+  subgraph GEN["AsyncGenerator&lt;string&gt;"]
+    g1["yield &quot;こんにちは&quot;"]
+    g2["yield &quot;TypeScript&quot;"]
+    g3["yield &quot;の世界へ&quot;"]
+    g1 ~~~ g2 ~~~ g3
+  end
+  subgraph LOOP["for await...of"]
+    c1["chunk = &quot;こんにちは &quot;"]
+    c2["chunk = &quot;TypeScript &quot;"]
+    c3["chunk = &quot;の世界へ &quot;"]
+    c1 ~~~ c2 ~~~ c3
+  end
+  g1 --> c1
+  g2 --> c2
+  g3 --> c3
 ```
 
 > **streamText の `textStream` も同じ型**(`AsyncIterable<string>`)です。モックで動きを理解しておくと、本物の API に移行するときに混乱しません。
@@ -133,11 +149,11 @@ type ArticleMeta = z.infer<typeof articleMetaSchema>;
 
 ```ts
 import { generateObject } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+// hf は前掲の createOpenAICompatible(...) で作成済みとする
 
 // generateObject は await する
 const { object } = await generateObject({
-  model: anthropic("claude-sonnet-4-5"),
+  model: hf("Qwen/Qwen2.5-72B-Instruct"),
   schema: articleMetaSchema,      // Zod スキーマを渡すだけ
   prompt: "TypeScript の非同期処理に関する技術記事のメタデータを生成してください。",
 });
@@ -182,7 +198,7 @@ console.log(result.success); // false → "urgent" は enum に無い
 import { streamObject } from "ai";
 
 const { partialObjectStream } = streamObject({
-  model: anthropic("claude-sonnet-4-5"),
+  model: hf("Qwen/Qwen2.5-72B-Instruct"),
   schema: articleMetaSchema,
   prompt: "...",
 });
@@ -199,12 +215,12 @@ for await (const partial of partialObjectStream) {
 
 ## オフラインと本物の切り替え
 
-`src/15_streaming_structured.ts` は第14章と同じ「キーの有無で自動分岐」パターンです。
+`src/15_streaming_structured.ts` は第14章と同じ「トークンの有無で自動分岐」パターンです。
 
 ```ts
 async function main(): Promise<void> {
-  if (process.env.ANTHROPIC_API_KEY) {
-    // streamText / generateObject で本物の Claude を使う
+  if (process.env.HF_TOKEN) {
+    // streamText / generateObject で本物の Hugging Face モデルを使う
     await demoRealStreaming();
     await demoRealStructured();
   } else {
@@ -386,6 +402,6 @@ if (!ng.success) console.log(ng.error.issues[0]?.message);
 
 ```bash
 npm run ch15
-# 本物の Claude を使うなら(PowerShell):
-#   $env:ANTHROPIC_API_KEY = "sk-ant-..."; npm run ch15
+# 本物の Hugging Face モデルを使うなら(PowerShell):
+#   $env:HF_TOKEN = "hf_..."; npm run ch15
 ```

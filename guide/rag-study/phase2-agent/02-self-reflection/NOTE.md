@@ -4,12 +4,11 @@
 
 エージェントが自分の出力を評価し、不十分なら再試行するループ構造。
 
-```
-retrieve → generate → grade ─── pass ──→ END
-                         │
-                        fail
-                         │
-                         └──→ retrieve（戻る）
+```mermaid
+flowchart LR
+    retrieve["retrieve"] --> generate["generate"] --> grade["grade"]
+    grade -->|pass| done["END"]
+    grade -->|"fail（戻る）"| retrieve
 ```
 
 ## なぜ必要か
